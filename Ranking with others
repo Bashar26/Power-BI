@@ -1,0 +1,19 @@
+TNet Claim Value = 
+
+VAR Names = SELECTCOLUMNS(ALL('healthcare w others'), "RankItem", 'healthcare w others'[HealthCare_Provider_Name])
+
+VAR HValue = ADDCOLUMNS(Names, "RankMeasure", CALCULATE([Net Claim Value],ALL(healthcare[HealthCare_Provider_Name])))
+
+VAR HRank = ADDCOLUMNS(HValue, "Rank", RANKX( HValue , [RankMeasure], [RankMeasure], DESC , Dense))
+
+VAR HTop = ADDCOLUMNS(HRank , "TopOROthers", IF( [Rank] <= [Top N Value], [RankItem], "Others"))
+
+VAR Final_ = SELECTCOLUMNS(FILTER(HTop,CONTAINSROW(VALUES( 'healthcare w others'[HealthCare_Provider_Name]), [TopOROthers])), "TopN_Others", [RankItem])
+
+        RETURN
+        CALCULATE([Net Claim Value],
+        TREATAS(Final_,'healthcare w others'[HealthCare_Provider_Name]))
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Rank def Claim Value = IF(SELECTEDVALUE( 'healthcare w others'[HealthCare_Provider_Name]) = "Others",0,[TNet Claim Value])
