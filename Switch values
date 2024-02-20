@@ -1,0 +1,11 @@
+-- After you creat a table for the switch values :
+
+Selected metric = 
+
+SWITCH
+(
+    TRUE(),
+    SELECTEDVALUE('Measure selection'[Measure]) = "Totalbase",SUM(tASOAPPlansAllCurrencies[TOTALAMOUNT_Base]),
+    SELECTEDVALUE('Measure selection'[Measure]) = "Totalspc",SUM(tASOAPPlansAllCurrencies[TOTALAMOUNT_SPC]),
+    SUM(tASOAPPlansAllCurrencies[TOTALAMOUNT_Base])
+)
