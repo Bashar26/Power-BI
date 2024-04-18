@@ -1,0 +1,7 @@
+Run2 = 
+CALCULATE( MeasureList[%],
+WINDOW(
+    0,ABS,
+    0,ABS,
+    SUMMARIZE(ALLSELECTED(EstimatedCostValueBand),EstimatedCostValueBand[EstimatedCostValueBand Fields]),
+    ORDERBY(EstimatedCostValueBand[EstimatedCostValueBand Fields])))
